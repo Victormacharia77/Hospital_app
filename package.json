@@ -1,0 +1,37 @@
+{
+  "name": "hospital_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev":"nodemon app.js",
+    
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "Hospital_App"
+  },
+  "keywords": [
+    "npm",
+    "install",
+    "express"
+  ],
+  "author": "victor",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.4.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.18.0",
+    "flash": "^1.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.9.1",
+    "nodemon": "^3.0.3",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0"
+  }
+}

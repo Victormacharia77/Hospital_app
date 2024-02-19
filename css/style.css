@@ -34,9 +34,7 @@ section{
     padding:2rem;
 }
 
-section:nth-child(even){
-  /* background: #f5f5f5; */
-}
+
 .heading{
     text-align: center;
     padding-bottom: 2rem;
@@ -91,7 +89,9 @@ section:nth-child(even){
     background: #fff;
 }
 
-
+header{
+    z-index: 1000;
+}
 
 .header
 .logo{
@@ -256,7 +256,7 @@ padding:2.5rem ;
 .about .row{
     display:flex ;
     align-items: center;
-    flex-wrap: wrap;
+    
 }
 
 .about .row .image{
@@ -265,6 +265,7 @@ padding:2.5rem ;
 
 .about .row .image img{
     width: 100%;
+    padding-right: 5%;
 }
 
 .about .row .content{
@@ -379,7 +380,7 @@ color: #fff;
 .book .row form .box {
     width: 100%;
     margin-bottom: 1rem; /* Adjust margin for better spacing */
-    border: 2px solid green; /* Green border for input fields */
+    border: 2px solid var(--green); /* Green border for input fields */
     font-size: 1.6rem;
     color: var(--black);
     text-transform: none;
@@ -390,7 +391,7 @@ color: #fff;
 
 .book .row form .btn {
     padding: 1rem 4rem;
-    background-color: green; /* Change button background color to green */
+    background-color:var(--green); /* Change button background color to green */
     color: white; /* Change button text color to white */
     border: none;
     cursor: pointer;
@@ -520,6 +521,113 @@ padding:1rem 0;
 .footer .credit span{
 color: var(--green);
 }
+
+ .container{
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+ }
+
+.appointment-info{
+    margin-right: 10%;
+}
+
+.form .container .appointment-info h4{
+font-size: 3.0rem;
+}
+
+.form .container .appointment-info h5{
+    
+    font-size: 3.0rem;
+    
+
+}
+
+.form .container .appointment-info ul{
+font-size: 2.5rem;
+}
+
+.form .container .appointment-info li{
+font-size: 2.0rem;
+}
+
+.form .appointment-form label{
+    font-size: 2.0rem;
+}
+
+.appointment-form input {
+    width: 100%;
+    margin-bottom: 1rem; 
+    border: 2px solid var(--green);
+    font-size: 1.6rem;
+    color: var(--black);
+    text-transform: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    
+  }
+  
+  .appointment-form .message-box {
+    width: 700px; /* Adjust width as needed */
+    height: 150px; /* Adjust height as needed */
+    margin-bottom: 1rem; 
+    border: 2px solid var(--green);
+    font-size: 1.6rem;
+    color: var(--black);
+    text-transform: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+  }
+  
+  
+   ::placeholder {
+    color: var(--light-color);
+  }
+  
+ 
+    .submit {
+        background-color:var(--green);
+        color: #fff; 
+        border: var(--border);
+        padding: 10px 20px;
+        font-size: 1.3rem;
+        border-radius: 5px;
+        
+      }
+
+      
+      
+    
+    
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
