@@ -343,7 +343,7 @@ color: #fff;
 .book .row {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    
     gap: 2rem;
 }
 
@@ -531,6 +531,7 @@ align-items: center;
 
 .appointment-info{
     margin-right: 10%;
+    
 }
 
 .form .container .appointment-info h4{
@@ -596,12 +597,85 @@ font-size: 2.0rem;
         
       }
 
+
+      .ambulance-gallery{
+        display: flex;
+      gap: 2rem;
+        margin-left: 3%;
+      }
       
-      
+      .ambulance-gallery .emergency-response-photos img{
+        flex: 1 1 45rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+    .--ambulance-info{
+       margin-left: 10%; 
+    }
+    .--ambulance-info p3,p4,p5{
+font-size: 1.7rem;
+gap: 2rem;
+display: flex;
+
+    }
+
+    .--ambulance-info h2,h3,h4{
+        font-size: 1.7rem;
+        margin-top: 3%;
+    }
     
+     .quick-links {
+    display:flex ;
+    flex-direction: column ;
+    width: 300px;
+    height: 350px;
+    padding:5%;
+    
+    }  
+    .quick-links a{
+        color: var(--green);
+        padding-bottom: 20%;
+        font-size: 1.3rem;
+        margin-bottom: 10%;
+    
+    }
+        .quick-links a i{
+            padding-right: .5rem;
+margin-right: 10%;
+            color:var(--green);
+
+    }
+       .info .emergency{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        
+       }
+    
+        .box-paragraph{
+        margin-left: 50%;
+       }
+       .box-space{
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+       }
     
  
-
+.book .row .book-form .message-box{
+    width: 650px; /* Adjust width as needed */
+    height: 150px; /* Adjust height as needed */
+    margin-bottom: 1rem; 
+    border: 2px solid var(--green);
+    font-size: 1.6rem;
+    color: var(--black);
+    text-transform: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
 
 
 
