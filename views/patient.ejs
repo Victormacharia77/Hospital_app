@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Patient Management System</title>
+    <style>
+        /* CSS for basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="submit"] {
+            padding: 6px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Patient Management System</h1>
+    <!-- Search Patients -->
+    <h2>Search Patients</h2>
+    <form>
+        <label for="search-name">Search by Name:</label>
+        <input type="text" id="search-name" name="search-name"><br>
+        <label for="search-id">Search by ID:</label>
+        <input type="text" id="search-id" name="search-id"><br>
+        <input type="submit" value="Search">
+    </form>
+     <!-- Add New Patient -->
+     <h2>Add New Patient</h2>
+     <form>
+         <label for="name">Name:</label>
+         <input type="text" id="name" name="name"><br>
+         <label for="age">Age:</label>
+         <input type="text" id="age" name="age"><br>
+         <label for="gender">Gender:</label>
+         <input type="text" id="gender" name="gender"><br>
+         <label for="contact">Contact:</label>
+         <input type="text" id="contact" name="contact"><br>
+         <label for="contact">Diagnosis:</label>
+         <input type="text" id="contact" name="diagnosis"><br>
+         <input type="submit" value="Add Patient">
+     </form>
+ 
+    
+    <!-- Patient List -->
+    <h2>Patients</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Contact</th>
+            <th>Diagnosis</th>
+        </tr>
+        <!-- Sample patient data -->
+        <tr>
+            <th>2245423535</th>
+            <td>John Doe</td>
+            <td>35</td>
+            <td>Male</td>
+            <td>123-456-7890</td>
+            
+        </tr>
+        <!-- Add more rows for additional patients -->
+    </table>
+
+   
+   
+    
+</body>
+</html>

@@ -18,7 +18,7 @@
         <a href="#services">services</a>
         <a href="/about">about</a>
         <a href="/doctors">doctors</a>
-        <a href="#book">book</a>
+        <a href="/book">book</a>
         <a href="#review">review</a>
     </nav>
 
@@ -231,26 +231,26 @@
       <img src="/public/css/image/booking.jpg" alt="">
    </div>
 <div class="book-form">
-  <form method="POST" action="/">
+  <form method="POST" action="/book">
 
     <h3>Book appointments</h3>
     <label for="name">Name</label>
     
-    <input type="text" placeholder="Name" class="box" required> 
+    <input type="text" placeholder="Name" class="box"   name="name"  required> 
     
-  
-    <label for="name">Number</label>
-    <input type="text" placeholder="Phone number" class="box" required> 
-  
     <label for="name">Email</label>
-    <input type="text" placeholder="Email" class="box" required> 
+    <input type="text" placeholder="Email" class="box" name="email" required> 
   
+    <label for="name" >Number</label>
+    <input type="text" placeholder="Phone number" class="box"  name="phone_number" required> 
+  
+    
     <label for="name">Date</label>
-    <input type="text" placeholder="Booking date" class="box" required> 
+    <input type="text" placeholder="Booking date" class="box" name="date" required> 
 
     <label for="name">Message</label>
       <br>
-      <input type="text" placeholder="Message" class="message-box" required> 
+      <input type="text" placeholder="Message" class="message-box" name="message" required> 
     <br>
   
   <input type = "submit" value = "Book now" class="btn">

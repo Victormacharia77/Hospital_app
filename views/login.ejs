@@ -36,16 +36,16 @@
          <!--login section starts-->
  
  <section class="login" id="login">
-    <h1 class="heading"><span>Log  </span> in</h1>
+    <h1 class="heading"><span>LOG  </span> IN</h1>
         <div class="log_in_form">
            
         <form action="/login" method="POST">
-            <label for = "text">Email</label>
+            <label for = "text">Username</label>
             <br>
             <input type="text"
-            id="email"
-            name="email"
-            placeholder="Email"
+            id="username"
+            name="username"
+            placeholder="Username"
             />
             <br>
             <label for = "password">Password</label>
@@ -54,15 +54,17 @@
             type="password"
             id = "password"
             name="password"
-            placeholder = "Password"
+            placeholder = "password"
             required
             />
             <br>
             <br>
-            <a href="#" class="submit">Log in</a>
-    
-           <p> Need an account?</p>  
-           <a href="/register" class="signup-link">Sign up</a>
+        
+            <a href="/patient" class="login-btn">Log in</a>
+            <p> Need an account?</p>  
+            <a href="/register" class="signup-link">Sign up</a>
+    </form>
+          
            </div>
            </section>
 

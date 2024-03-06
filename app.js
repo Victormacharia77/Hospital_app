@@ -1,19 +1,20 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const session = require("express-session");
 const cookieParser = require('cookie-parser');
-const  initializePassport  = require("/.passport");
-const passport = require("passport");
-const database = require('./database')
+//const  initializePassport  = require("./passport");
+//const passport = require("passport");
+
 const bcrypt = require('bcryptjs')
 const flash = require('flash')
-const bodyparser = require('body-parser')
-
-
+const mysql = require('mysql')
+const query = require('./database')
 
 
 
 //applying middleware
+
+
 app.use(cookieParser());
 app.use(session({
     resave:false,
@@ -25,35 +26,35 @@ app.use(session({
 /*app.use:initialises passport and makes it available within your routes by creating an instance of the 
 middleware and attaching it to the express app
 */
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-initializePassport(passport);
-app.use((err,req,res,next)=>{
-    console.error(err.stack);
-    res.status(500),{message:"oops something went wrong on our end.we apologise for the incovinience.Please try again later"}
-})
-//uses the body parser middleware to pass urlencoded data received in POST REQUESTS 
-//BODY PARSER IS A HTTP request body that usually helps when you need to know more than just the url being hit 
+// initializePassport(passport);
+//app.use((err,req,res,next)=>{
+    //console.error(err.stack);
+ ///})
 
- app.use(bodyparser.urlencoded({extended:true}));
+ app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    next();
+});
+
+
+ 
 //to enable images and styles to work
-app.use(express.static('public'))
 app.use('/public', express.static('public'))
  
 //to perform authentication related functions on your application 
-const {ensureAuthenticated,forwardAuthenticated} = require ('/auth');
+//const {ensureAuthenticated,forwardAuthenticated} = require ('/auth');
 
-//imports ejs module which is used for rendering EJS TEMPLATES IN YOUR EXPRESS TEMPLATES 
-const {render} = require('ejs');
-
-//json parsing
-const json = require ('body-parser/lib/types/json');
 
  //handles json parsing
 app.use(express.json());
-app.use(express.urlencoded({extended:true}))
-app.use(bodyparser.json)
+app.use(express.urlencoded({extended:false}))
+
 
 //setting up a view engine
 app.set('view engine','ejs')
@@ -65,6 +66,7 @@ app.get('/',(req,res)=>{
     res.render("index")
    
 });
+  
 
 app.get('/login',(req,res)=>{
     
@@ -99,6 +101,25 @@ app.get('/pharmacy',(req,res)=>{
 })
 
 
+    app.post('/book', async (req, res) => {
+const { id,name, email, phone_number,date, message} = req.body
+        try {
+        const savebooking  =' INSERT INTO appointments (id,name, email , phone_number, date, message) VALUES (?,?, ?, ? ,?, ?)'
+  await query(savebooking,[id,name, email,phone_number, date ,message])
+    
+            req.flash('success_msg', 'Appointment booked successfully');
+            res.redirect('/'); 
+        } catch (error) {
+            req.flash('error_msg', 'Failed to book appointment');
+            console.error('Failed to insert into appointments table:', error);
+            res.redirect('/'); 
+        }
+    });
+
+    
+
+
+
 //route for total care
 
 app.get('/totalcare',(req,res)=>{
@@ -112,9 +133,52 @@ app.get('/doctors',(req,res)=>{
     
     res.render("doctors")
 })
-//create a port
-const port = 3000;
-app.listen (port,(req,res)=>{
-    console.log('port created');
+
+app.get('/patient',(req,res)=>{
+    
+    res.render("patient")
 })
+
+app.get('/register',(req,res)=>{
+    
+    res.render("register")
+})
+
+app.post('/register', async (req, res) => {
+    const { id, name, email, phone_number, password } = req.body;
+    try {
+        // Hash the password
+        const password_hash = await hashPassword(password);
+
+        // Insert the doctor details into the database
+        const doctor_details = 'INSERT INTO doctors (id, name, email, phone_number, password_hash) VALUES (?, ?, ?, ?, ?)';
+
+        await query(doctor_details, [id, name, email, phone_number, password_hash]);
+
+        req.flash('success_msg', 'Doctor registration successful');
+        res.redirect('/');
+    } catch (error) {
+        req.flash('error_msg', 'Failed to register a doctor');
+        console.error('Failed to insert into doctors table:', error);
+        res.redirect('/');
+    }
+});
+
+// Function to hash the password
+async function hashPassword(password) {
+    // Use a secure hashing algorithm (e.g., bcrypt) to hash the password
+    // Example using bcrypt:
+    const bcrypt = require('bcrypt');
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    return hashedPassword;
+}
+
+
+
+
+
+//create a port
+const port = 7500;
+app.listen(port,()=>console.log('Listen on port 7500.......'))
 
