@@ -146,6 +146,34 @@ display: none;
     color: var(--black);
     
 }
+
+    .login .log_in_form .login-btn {
+        
+        font-size: 1.6rem; 
+        color: var(--white); 
+      
+        
+        display: flex;
+        align-items: center;
+        justify-content: center; 
+      
+        
+        background-color: var(--green); 
+        padding: 15px 30px; 
+        border: none; 
+        border-radius: 45px; 
+        cursor: pointer; 
+        width: 180%;
+        /* Optional: Button hover effect */
+        transition: background-color 0.2s ease-in-out; /* Smooth transition */
+        &:hover {
+          background-color: var(--dark-green); /* Darker shade on hover */
+        }
+      }
+      
+    
+    
+
 .login .log_in_form input {
     width: 180%;
     margin-bottom: 1rem; 
