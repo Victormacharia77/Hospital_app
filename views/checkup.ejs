@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Checkup</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/public/css/style.css">
     <link rel="stylesheet" href="/js/script.js">
 </head>
 <body>
@@ -54,24 +54,27 @@
 </div>
  
  <div class="appointment-form">
-    <form method="POST" action="/">
+    <form method="POST" action="/checkup">
       <label for="name">Name</label>
       <br>
-      <input type="text" placeholder="Full Name" class="btn" required> 
+      <input type="text"  name="full_name" placeholder="Full Name" class="input" required> 
     <br>
     <br>
       <label for="name">Email</label>
       <br>
       
-      <input type="text" placeholder="Email" class="input" required> 
+      <input type="text" name="email" placeholder="Email" class="input" required> 
     <br>
+
       <label for="name">Appointment Date</label>
       <br>
-      <input type="text" placeholder="Appointment Date" class="input" required> 
+
+      <input type="date"  name= "date" placeholder="Appointment Date" class="input" required> 
+
 <br>
       <label for="name">Message</label>
       <br>
-      <input type="text" placeholder="Message" class="message-box" required> 
+      <input type="text"  name = "message" placeholder="Message" class="message-box" required> 
     <br>
     
     <button type="submit" class="submit">submit</button>

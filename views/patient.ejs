@@ -1,88 +1,207 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Patient Management System</title>
-    <style>
-        /* CSS for basic styling */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        input[type="text"], input[type="submit"] {
-            padding: 6px;
-            margin-right: 10px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Information </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/js/script.js">
 </head>
 <body>
-    <h1>Patient Management System</h1>
-    <!-- Search Patients -->
-    <h2>Search Patients</h2>
-    <form>
-        <label for="search-name">Search by Name:</label>
-        <input type="text" id="search-name" name="search-name"><br>
-        <label for="search-id">Search by ID:</label>
-        <input type="text" id="search-id" name="search-id"><br>
-        <input type="submit" value="Search">
-    </form>
-     <!-- Add New Patient -->
-     <h2>Add New Patient</h2>
-     <form>
-         <label for="name">Name:</label>
-         <input type="text" id="name" name="name"><br>
-         <label for="age">Age:</label>
-         <input type="text" id="age" name="age"><br>
-         <label for="gender">Gender:</label>
-         <input type="text" id="gender" name="gender"><br>
-         <label for="contact">Contact:</label>
-         <input type="text" id="contact" name="contact"><br>
-         <label for="contact">Diagnosis:</label>
-         <input type="text" id="contact" name="diagnosis"><br>
-         <input type="submit" value="Add Patient">
-     </form>
- 
-    
-    <!-- Patient List -->
-    <h2>Patients</h2>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Contact</th>
-            <th>Diagnosis</th>
-        </tr>
-        <!-- Sample patient data -->
-        <tr>
-            <th>2245423535</th>
-            <td>John Doe</td>
-            <td>35</td>
-            <td>Male</td>
-            <td>123-456-7890</td>
-            
-        </tr>
-        <!-- Add more rows for additional patients -->
-    </table>
+    <!--header section starts-->
+    <header class="header">
+        <a href="#" class="logo"><i class="fa-solid fa-briefcase-medical"></i>Health Plus</i></a>
+        <br>
+        <nav class="navbar">
+            <a href="/">home</a>
+            <a href="#services">services</a>
+            <a href="#about">about</a>
+            <a href="/doctors">doctors</a>
+            <a href="#book">book</a>
+            <a href="#review">review</a>
+        </nav>
+        <a href="/login" class="submit">log out</a>
 
-   
-   
+        <div id="menu-btn" class="fas fa-bars"></div>
     
+        </header>
+        <!--header section ends-->
+  
+        <!--Heading section starts-->
+
+        <h1 class="heading"><span>Patient</span> Information</h1>
+
+        <!--heading section ends-->
+
+         <!--login section starts-->
+ 
+ <section class="login" id="login">
+    <h1 class="heading"><span>Patient  </span> Information</h1>
+        <div class="log_in_form">
+           
+        <form action="/patient" method="POST">
+            <label for = "text">name</label>
+            
+            <input type="text"
+            id="name"
+            name="name"
+            placeholder="name" required
+            />
+            <br>
+
+            
+            <label for = "age">Age</label>
+            
+            <input type="number"
+            type="age"
+            id = "age"
+            name="age"
+            placeholder = "age"
+            required
+            />
+
+            <label for = "gender">Gender</label>
+            
+            <input type="text"
+            
+            id = "gender"
+            name="gender"
+            placeholder = "gender"
+            required
+            />
+
+
+        <label for="diagnosis">Diagnosis</label>
+        <input id="diagnosis" name="diagnosis" 
+        id = "diagnosis"
+        name="diagnosis"
+        placeholder = "diagnosis"
+        required />
+
+
+        <label for="treatment">Treatment</label>
+        <input id="treatment"
+         name="treatment" 
+         placeholder="treatment"
+         required/>
+
+         <label for="date">date</label>
+        <input id="date"
+         name="date" 
+         placeholder="date"
+         required />
+<br>
+            <br>
+        
+            <button type="submit" class="login-btn">Submit</button>
+           
+    </form>
+          
+           </div>
+           </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!--footer section starts-->
+<section class="footer">
+    <div class="box-container">
+       <div class="box">
+        <h3>quick links</h3>
+        <a href = "/"><i class="fas fa-chevron-right"></i>home</a>
+        <a href = "#"><i class="fas fa-chevron-right"></i>services</a>
+        <a href = "#"><i class="fas fa-chevron-right"></i>about</a>
+        <a href = "#"><i class="fas fa-chevron-right"></i>book</a>
+        <a href = "#"><i class="fas fa-chevron-right"></i>review</a>
+       </div>
+  
+       <div class="box">
+        <h3>our services</h3>
+        <a href = "/checkup"><i class="fas fa-chevron-right"></i>checkup</a>
+      <a href = "/ambulance"><i class="fas fa-chevron-right"></i>ambulance</a>
+      <a href = "/doctors"><i class="fas fa-chevron-right"></i>doctors</a>
+      <a href = "/pharmacy"><i class="fas fa-chevron-right"></i>pharmacy</a>
+      <a href = "/inpatient"><i class="fas fa-chevron-right"></i>Inpatient services</a>
+      <a href = "/totalcare"><i class="fas fa-chevron-right"></i>total care</a>
+       </div>
+  
+       <div class="box">
+        <h3>contact info</h3>
+        <a href = "#"><i class="fas fa-phone"></i>+254 745 398967<a>
+        <a href = "#"><i class="fas fa-phone"></i>+254 798 923273</a>
+        <a href = "#"><i class="fas fa-envelope"></i>victorkinyanjui.macharia@gmail.com</a>
+        <a href = "#"><i class="fas fa-chevron-right"></i>programmimgpalace66@gmail.com</a>
+        <a href = "#"><i class="fas fa-map-marker-alt"></i>nairobi, Kenya -40100</a>
+       </div>
+  
+       <div class="box">
+        <h3>contact info</h3>
+        <a href = "#"><i class="fas fa-phone"></i>+254 745 398967<a>
+        <a href = "#"><i class="fas fa-phone"></i>+254 798 923273</a>
+        <a href = "#"><i class="fas fa-envelope"></i>victorkinyanjui.macharia@gmail.com</a>
+        <a href = "#"><i class="fas fa-chevron-right"></i>programmimgpalace66@gmail.com</a>
+        <a href = "#"><i class="fas fa-map-marker-alt"></i>nairobi, Kenya -40100</a>
+       </div>
+  
+    </div>
+    <div class="credit"> created by<span>Victor Kinyanjui</span> | all rights reserved</div>
+  </section>
+  
+  <!--footer section ends-->
+
 </body>
 </html>

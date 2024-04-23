@@ -6,15 +6,15 @@ module.exports = {
         console.log("User is authenticated")
         return next();
       }
-      console.log("User is not authenticated ,redirecting to /login")
+      console.log("User is  authenticated ,redirecting to /patient")
       req.flash("error_msg", "Please log in to view that resource");
       res.redirect("/login");
     },
-    //checks if user is not authenticated 
+    //checks if user is  authenticated 
     forwardAuthenticated: function (req, res, next) {
       if (!req.isAuthenticated()) {
         return next();
       }
-      res.redirect("/");
+      res.redirect("/patient");
     },
   };

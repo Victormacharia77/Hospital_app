@@ -138,7 +138,8 @@ display: none;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-
+    width:350px;
+    margin: 0 auto;
 }
 
 .login .log_in_form label {
@@ -163,7 +164,7 @@ display: none;
         border: none; 
         border-radius: 45px; 
         cursor: pointer; 
-        width: 180%;
+        width: 150%;
         /* Optional: Button hover effect */
         transition: background-color 0.2s ease-in-out; /* Smooth transition */
         &:hover {
@@ -175,18 +176,29 @@ display: none;
     
 
 .login .log_in_form input {
-    width: 180%;
-    margin-bottom: 1rem; 
-    border: 2px solid var(--green);
-    font-size: 1.6rem;
+    width: 150%;
+    
+    border: 1px solid var(--green);
+    font-size: 1.4rem;
     color: var(--black);
     text-transform: none;
-    margin-top: 6%;
     
-    padding: 2.5rem;
-    border-radius: 45px;
-    gap: 2rem;
+    
+    padding: 1.5rem;
+    border-radius: 5px;
+   
 }
+
+
+
+
+
+
+
+
+
+
+
 .login .log_in_form p{
     margin-top: 10%;
     font-size: 2.5rem;
@@ -196,13 +208,17 @@ display: none;
     font-size: 1.7rem;
     color:var(--green);
 }
- 
+
+
+
+
 .register .register-form{
     display:flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-
+    width:350px;
+    margin: 0 auto;
 }
 .register .register-form label{
     font-size: 2.0rem;
@@ -211,17 +227,16 @@ display: none;
 }
 
 .register .register-form input{
-    width: 180%;
-    margin-bottom: 1rem; 
-    border: 2px solid var(--green);
-    font-size: 1.6rem;
+    width: 150%;
+    
+    border: 1px solid var(--green);
+    font-size: 1.4rem;
     color: var(--black);
     text-transform: none;
     
     
-    padding: 2.0rem;
+    padding: 1.5rem;
     border-radius: 45px;
-    gap: 2rem;
 }
 .register .register-form p{
     margin-top: 10%;
@@ -744,6 +759,53 @@ display: flex;
         margin-top: 3%;
     }
     
+
+
+    .--pharmacy-info{
+        margin-left: 10%; 
+     }
+     .--pharmacy-info p3,p4,p5{
+ font-size: 1.7rem;
+ gap: 2rem;
+ display: flex;
+ 
+     }
+     .--pharmacy-info h1{
+        margin-top: 4% ;
+     }
+     .--pharmacy-info h2,h3,h4{
+         font-size: 1.7rem;
+         margin-top: 3%;
+     }
+.--nurse-info{
+    display: inline;
+    margin-top: 60%;
+    }
+.--nurse-info p3,p4,p5{
+    font-size: 1.7rem;
+    gap: 2rem;
+    display: flex;
+   
+    
+}
+.--nurse-info h2,h3,h4{
+    font-size: 1.7rem;
+    margin-top: 3%;
+}
+.--nurse-info  .--nurse-info-image img{
+    width:20%;
+    height:30%;
+    margin-left: 70%;
+}
+
+
+
+
+
+
+
+
+
      .quick-links {
     display:flex ;
     flex-direction: column ;
@@ -761,7 +823,7 @@ display: flex;
     }
         .quick-links a i{
             padding-right: .5rem;
-margin-right: 10%;
+            margin-right: 10%;
             color:var(--green);
 
     }
