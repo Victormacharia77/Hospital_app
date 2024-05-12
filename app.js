@@ -32,6 +32,7 @@ middleware and attaching it to the express app
  app.use(passport.session());
 
  initializePassport(passport);
+
 app.use((err,req,res,next)=>{
     console.error(err.stack);
  })
@@ -69,39 +70,60 @@ app.get('/',(req,res)=>{
     res.render("index")
    
 });
-  
-// Route for login page
-app.get('/login', forwardAuthenticated, (req, res) => {
-    res.render('login');
-});
 
-// Route for handling login form submission
-app.post('/login', passport.authenticate('local', {
-    successRedirect: '/patient',
-    failureRedirect: '/',
-    failureFlash: true
-}));
-
-// Route for the patient dashboard, protected by authentication
-app.get('/patient', ensureAuthenticated, (req, res) => {
+app.get('/login' , forwardAuthenticated ,(req,res)=>{
     
-    res.render('patient');
+    res.render("login")
+   
+});
+ app.post('/login', (req,res,next) =>{
+    passport.authenticate('user-local',(err,user,info)=>{
+        if (err) {
+
+            console.log(err)
+            return next(err);
+        }
+        
+        if (!user) {
+            console.log('This is not a user!!')
+            return res.render('login',{error: info.error});
+        }
+
+        req.logIn(user, (err) =>{
+            if (err) return next(err);
+            return res.redirect("/patient_register")
+        })
+    })
+ })
+// Route for the patient dashboard, protected by authentication
+app.get('/patient_register',ensureAuthenticated, (req, res) => {
+    
+    res.render('patient_register');
 });
 
 // Route for submitting patient information
-app.post('/patient', async (req, res) => {
-    const { id, name, age, gender, diagnosis, treatment, date } = req.body;
+function validateEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+}
+
+app.post ('/patient_register',ensureAuthenticated , async  (req, res) => {
+    const { id, name, email, age, gender, diagnosis, treatment, time, date } = req.body;
     try {
-        const patient_input = 'INSERT INTO patient_info (id, name, age, gender, diagnosis, treatment, date) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        await query(patient_input, [id, name, age, gender, diagnosis, treatment, date]);
+        if (!validateEmail(email)) {
+            throw new Error("Invalid email address");
+        }
+        const patient_input = 'INSERT INTO patient_info (id, name, email, age, gender, diagnosis, treatment, time, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        await query(patient_input, [id, name, email, age, gender, diagnosis, treatment, time, date]);
         req.flash('success_msg', 'Patient information successfully entered');
-        res.redirect('/patient');
+        res.redirect('/');
     } catch (error) {
         req.flash('error_msg', 'Failed to input patient information');
         console.error('Failed to insert into patient_info table:', error);
-        res.redirect('/');
+        res.redirect('/patient_register');
     }
 });
+
 
 
 
@@ -136,7 +158,10 @@ app.post('/checkup', async (req, res) => {
             }
 
         });
-
+        app.get('/inpatient',(req,res)=>{
+    
+            res.render("inpatient")
+        })
 //route for inpatient services
 
 app.get('/inpatient',(req,res)=>{
@@ -154,22 +179,72 @@ app.get('/nurses',(req,res)=>{
     
     res.render("nurses")
 })
-    app.post('/book', async (req, res) => {
-const { id,name, email, phone_number,date, message} = req.body
-        try {
-        const savebooking  =' INSERT INTO appointments (id,name, email , phone_number, date, message) VALUES (?,?, ?, ? ,?, ?)'
-  await query(savebooking,[id,name, email,phone_number, date ,message])
-    
-            req.flash('success_msg', 'Appointment booked successfully');
-            res.redirect('/'); 
-        } catch (error) {
-            req.flash('error_msg', 'Failed to book appointment');
-            console.error('Failed to insert into appointments table:', error);
-            res.redirect('/'); 
-        }
-    });
+// Function to validate email address
+function validateEmail(email) {
+    // Use a regular expression to validate the email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+    return emailRegex.test(email);
+}
+
+// Function to validate phone number
+function validatePhoneNumber(phoneNumber) {
+    // Use a regular expression to validate the phone number format
+    const phoneRegex = /^\d{10}$/; // Assuming a 10-digit phone number format
+
+    return phoneRegex.test(phoneNumber);
+}
+
+
+
+// POST route for booking appointments
+app.post('/book', async (req, res) => {
+    const { id, name, email, phone_number, date, time, message } = req.body;
+
+    // Validate email and phone number
+    const validEmail = validateEmail(email);
+    const validPhoneNumber = validatePhoneNumber(phone_number);
+
+    try {
+        
+    if (!validEmail || !validPhoneNumber) {
+        req.flash('error_msg', 'Invalid email address or phone number');
+        res.redirect('/#book');
+        return;
+    }
+
+    // Check if the name contains only alphanumeric characters
+    const validName = /^[a-zA-Z0-9]+$/.test(name);
+    if (!validName) {
+        req.flash('error_msg', 'Name should contain only alphabetic and numeric characters');
+        res.redirect('/#book');
     
+        return;
+    }
+
+        // Check if the patient already exists
+        const patientCheckQuery = 'SELECT * FROM patient_info WHERE email = ?';
+        const [existingPatient] = await query(patientCheckQuery, [email]);
+
+        // If the patient doesn't exist, create a new patient record
+        if (!existingPatient) {
+            const createPatientQuery = 'INSERT INTO patient_info (id, name, email, age, gender, diagnosis ,treatment,time ,date) VALUES (?, ?, ?,?,?,?,?,?,?)';
+            await query(createPatientQuery, [id, name, email,age,gender,diagnosis,treatment, time ,date]);
+        }
+
+        // Book the appointment
+        const saveBookingQuery = 'INSERT INTO appointments (id, name, email, phone_number, date, time, message) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        await query(saveBookingQuery, [id, name, email, phone_number, date, time, message]);
+
+        req.flash('success_msg', 'Appointment booked successfully');
+        res.redirect('/');
+
+    } catch (error) {
+        req.flash('error_msg', 'Failed to book appointment');
+        console.error('Failed to insert into appointments table:', error);
+        res.redirect('/');
+    }
+});
 
 
 
@@ -197,19 +272,19 @@ app.get('/register',(req,res)=>{
 app.post('/register', async (req, res) => {
     try {
         let errors = [];
-    const { id, name, email, phone_number, password,confirm_password} = req.body;
+    const { id, name, email, phone_number, password} = req.body;
     
  //  if (password.length<8){
  //      errors.push({ msg: 'Password must be at least 8 characters' });
   //     console.log(errors)
   // }
+  if (!validateEmail(email)) {
+    errors.push({ msg: 'Email is required' });
+}
 
-     if (password != confirm_password){
-        errors.push({ msg: 'Passwords do not match' });
-        console.log(errors)
-    }
+     
 //checks if the errors array contains any validation errors ,if there are errors the length of the errors will be less than 0
-else if (errors.length>0){
+ if (errors.length>0){
     console.log(errors)
     
 
@@ -219,7 +294,7 @@ else if (errors.length>0){
         email,
         phone_number,
         password,
-        confirm_password
+        
     })
    
 } 

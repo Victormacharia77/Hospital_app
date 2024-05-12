@@ -14,14 +14,16 @@
         <a href="#" class="logo"><i class="fa-solid fa-briefcase-medical"></i>Health Plus</i></a>
         <br>
         <nav class="navbar">
+
             <a href="/">home</a>
             <a href="#services">services</a>
             <a href="#about">about</a>
             <a href="/doctors">doctors</a>
             <a href="#book">book</a>
             <a href="#review">review</a>
+            
         </nav>
-        <a href="/login" class="submit">log out</a>
+       
 
         <div id="menu-btn" class="fas fa-bars"></div>
     
@@ -38,62 +40,76 @@
  
  <section class="login" id="login">
     <h1 class="heading"><span>Patient  </span> Information</h1>
+    <p1>The following blank spaces are to be filled by authorized medical personelle.
+    
+    </p1>
         <div class="log_in_form">
            
-        <form action="/patient" method="POST">
-            <label for = "text">name</label>
-            
-            <input type="text"
-            id="name"
-            name="name"
-            placeholder="name" required
-            />
+        <form action="/patient_register" method="POST">
+            <label for="name">Name</label>
+            <input type="text" placeholder="Name" class="box" name="name" pattern="[A-Za-z]+" title="Please enter a valid name (letters only)" required>
             <br>
-
+           
+            <label for="email">email</label>
+            <input type="email"  name="email" placeholder="email" required />
             
             <label for = "age">Age</label>
+            <input type="number"  type="age" id = "age"  name="age"   placeholder = "age" required  />
             
-            <input type="number"
-            type="age"
-            id = "age"
-            name="age"
-            placeholder = "age"
-            required
-            />
 
-            <label for = "gender">Gender</label>
-            
-            <input type="text"
-            
-            id = "gender"
-            name="gender"
-            placeholder = "gender"
-            required
-            />
-
-
-        <label for="diagnosis">Diagnosis</label>
-        <input id="diagnosis" name="diagnosis" 
-        id = "diagnosis"
-        name="diagnosis"
-        placeholder = "diagnosis"
-        required />
-
-
-        <label for="treatment">Treatment</label>
-        <input id="treatment"
-         name="treatment" 
-         placeholder="treatment"
-         required/>
-
-         <label for="date">date</label>
-        <input id="date"
-         name="date" 
-         placeholder="date"
-         required />
+            <label for="gender">Gender</label>
+<select id="gender" name="gender" required>
+    <option value="" disabled selected>Select gender</option>
+    <option value="male">Male</option>
+    <option value="female">Female</option>
+    <option value="other">Other</option>
+</select>
 <br>
+
+<br>
+            
+           
+
+            <label for="diagnosis">Diagnosis</label>
+            <input type="text" id="diagnosis" name="diagnosis" placeholder="diagnosis" required />
+            
+            <label for="treatment">Treatment</label>
+            <input type="text" id="treatment" name="treatment" placeholder="treatment" required />
+           <br>
+           <br>
+            <label for="time">Time</label>
+            <input type="text" id="time" name="time" pattern="\d{2}:\d{2}" title="Enter time in format HH:MM" required style="width: 80px; padding: 5px;" oninput="formatTime(this)" />
+            
+            <script>
+            function formatTime(input) {
+                // Remove any non-numeric characters
+                input.value = input.value.replace(/[^\d]/g, '');
+                
+                // Ensure the value is in HH:MM format
+                if (input.value.length > 2) {
+                    let hours = parseInt(input.value.substring(0, 2), 10);
+                    let minutes = parseInt(input.value.substring(2), 10);
+                    
+                    // Limit hours to 23 and minutes to 59
+                    if (hours > 23) {
+                        hours = 23;
+                    }
+                    if (minutes > 59) {
+                        minutes = 59;
+                    }
+                    
+                    // Update the input value
+                    input.value = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
+                }
+            }
+            </script>
+            
             <br>
-        
+         <label for="date">date</label>
+        <input type="date" id="date"   name="date"   placeholder="date"   required />
+       
+<br>
+        <br>
             <button type="submit" class="login-btn">Submit</button>
            
     </form>

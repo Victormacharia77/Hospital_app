@@ -1,9 +1,9 @@
-const bcrypt = require('bcryptjs' ); //hashing password
+const bcrypt = require('bcrypt' ); //hashing password
 const LocalStrategy = require('passport-local').Strategy; //implementing local authentication a local authentication with passport
 
 const session = require('express-session');
 const query = require('./database');
-const passport = require('passport');
+
 //session constructor function 
 //creates session object for the user 
 //takes in three parameters and sests them as properties of the session object 
@@ -15,49 +15,67 @@ function SessionConstructor(userId , userGroup,details) {
 }
 
 //passport configuration 
-
-
-module.exports = function(passport) {
-    passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
-        try {
-            const user = await getUserByEmail(email);
-            if (!user) {
-                return done(null, false, { message: 'Email not registered' });
+    module.exports = function(passport) {
+        passport.use('user-local', new LocalStrategy({usernameField:'email'}, async (email, password, done) => {
+          try {
+            const querys = 'SELECT * FROM doctors WHERE email = ?';
+            const rows = await query(querys, [email]);
+            if (!rows.length) {
+              return done(null, false, { error: 'This email is unregistered' });
             }
-
-            const isMatch = await bcrypt.compare(password, user.password_hash);
-            if (isMatch) {
+            const user = rows[0];
+            if (!password) {
+              return done(null, false, { error: 'Password is required' });
+            }
+            bcrypt.compare(password, user.password, (err, isMatch) => {
+              if (err) throw err;
+              if (isMatch) {
                 return done(null, user);
-            } else {
-                return done(null, false, { message: 'Password incorrect' });
+              } else {
+                return done(null, false, { error: 'Password Incorrect' });
+              }
+            });
+          } catch(err) {
+            return done(null, false, { error: "Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists." });
+          }
+        }));
+      
+    passport.serializeUser(function(userObject, done) {
+        let sessionConstructor = new SessionConstructor(userObject.id, "userModel", "");
+        done(null, sessionConstructor);
+      });
+      passport.deserializeUser(async function (sessionConstructor, done) {
+        if (sessionConstructor.userGroup == 'userModel') {
+          const querys = 'SELECT * FROM doctors WHERE id = ?';
+          try {
+            const rows = await query(querys, [sessionConstructor.userId]);
+            if (!rows.length) {
+              return done(null, false, { error: 'User not found' });
             }
-        } catch (error) {
-            return done(error);
-        }
-    }));
-
-    passport.serializeUser((user, done) => {
-        done(null, user.id);
-    });
-
-    passport.deserializeUser(async (id, done) => {
-        try {
-            const user = await getUserById(id);
+            const user = rows[0];
             done(null, user);
-        } catch (error) {
-            done(error);
+          } catch(err) {
+            return done(null, false, { error: "Oops! Something went wrong on our end. We apologize for the inconvenience. Please try again later or contact support if the issue persists." });
+          }
         }
-    });
+        })
+      }
+      
 
-    async function getUserByEmail(email) {
-        const sql = 'SELECT * FROM doctors WHERE email = ?';
-        const result = await query(sql, [email]);
-        return result[0];
-    }
 
-    async function getUserById(id) {
-        const sql = 'SELECT * FROM doctors WHERE id = ?';
-        const result = await query(sql, [id]);
-        return result[0];
-    }
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

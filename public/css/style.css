@@ -493,7 +493,19 @@ color: #fff;
     font-size: 3rem;
     
 }
+.book .row form h3 {
+    color: var(--black);
+    padding-bottom: 1rem;
+    font-size: 3rem;
+    
+}
 
+.book .row form p {
+    color: var(--black);
+    padding-bottom: 1rem;
+    font-size: 3rem;
+    
+}
 .book .row form .box {
     width: 100%;
     margin-bottom: 1rem; /* Adjust margin for better spacing */
@@ -625,18 +637,31 @@ padding:1rem 0;
     
 
 }
+.register p1{
+    font-size:2.0rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.login p1{
+      font-size:2.0rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+}
 .footer.credit{
     padding:1rem;
     padding-top:2rem;
     margin-top:2rem;
     text-align: center;
-    font-size: 2rem;
+    font-size: 4rem;
     color:var(--light-color);
     border-top: .1rem solid rgba(0,0,0,.1);
 }
 
 .footer .credit span{
 color: var(--green);
+font-size: 2rem;
 }
 
  .container{

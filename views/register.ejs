@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>log in </title>
+    <title>Register Doctors </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/public/css/style.css">
     <link rel="stylesheet" href="/js/script.js">
@@ -36,33 +36,60 @@
          <!--Register section starts-->
         <section class="register" id="register">
             <h1 class="heading"><span>REGISTER  </span> </h1>
+            <p1>The following blank spaces are to be filled by authorized medical personelle.
+    
+            </p1>
                 <div class="register-form">
+
                     <form action="/register" method="POST">
                         <label for="name">Name:</label>
+
                         <input type="text" id="name" name="name"placeholder="Username" required><br>
+
                         <label for="email">Email:</label>
 
                         <input type="email" id="email" name="email"placeholder="Email"required><br>
 
-                        <label for="email">Phone number:</label>
-                        <input type="phone_number" id="phone_number" name="phone_number"placeholder="phone number"required>
+                        <label for="phone_number">Phone number:</label>
+
+                        <input type="tel" id="phone_number" name="phone_number"placeholder="phone number"required>
+
                         <br>
+
                         <label for="password">Password:</label>
+
                         <input type="password" id="password" name="password"placeholder="Password"required><br>
 
-                        <label for="password">Confirm Password:</label>
-                        <input type="password" id="password" name="password"placeholder="Confirm password"required><br>
                         
                         
-                        
+                        <br>
                         <input type = "submit" value = "Register" class="signup-btn">
-                        <p> Already have an account?</p>  
-                        
-                        <button class="signup-link"></button>
+                        <p> Already a  Doctor?</p>  
+            <a href="/login" class="signup-link">Login</a>
                     </form>
                 </div>
-        </section>
+                
         
+
+
+        </section>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const phone_number = document.getElementById('phone_number');
+    if (phone_number) {
+        phone_number.addEventListener('input', function() {
+            // Remove all non-numeric characters
+            let sanitized_value = this.value.replace(/[^0-9]/g, '');
+            // Limit to 10 digits
+            sanitized_value = sanitized_value.slice(0, 10);
+            // Update the input value
+            this.value = sanitized_value;
+        });
+    }
+});
+
+
+                    </script>
  <!--Register section ends -->
 
 

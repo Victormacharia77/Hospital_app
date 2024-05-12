@@ -16,14 +16,14 @@
     <nav class="navbar">
         <a href="/">home</a>
         <a href="#services">services</a>
-        <a href="/about">about</a>
+        <a href="#">about</a>
         <a href="/doctors">doctors</a>
         <a href="/">book</a>
         <a href="#review">review</a>
     </nav>
 
      
-      <a href="/login" class="submit">login as a doctor</a>
+      
     
     <div id="menu-btn" class="fas fa-bars"></div>
 
@@ -42,7 +42,7 @@
                     Our dedicated team of healthcare professionals is committed 
                     to providing personalized and comprehensive medical services.
                 </p>
-                <a href="#" class="btn">Contact us<span><i class="fa-solid fa-chevron-right"></i></span></a>
+                <a href="#footer" class="btn">Contact us<span><i class="fa-solid fa-chevron-right"></i></span></a>
             </div>
         </div>
     </section>
@@ -165,17 +165,21 @@
   advice on exercise routines and stress management techniques,
   we strive to provide practical tools for integrating health-conscious
   choices into your daily life</p>
-  <a href="" class="btn"> Learn more<span class="fas fa-chevron-right"></span></a>
+  
 </div>
      </div>
 
 </section>
 <!--about section ends-->
-
+<h1 class = 'heading'>OUR<span>DOCTORS</span></h1>
+  
 <!--doctor section starts-->
+<a href="/login" class="submit" id= "login">Login as a doctor</a>
+    
 <section class="doctors" id = "doctors">
-  <h1 class = 'heading'>OUR<span>DOCTORS</span></h1>
-
+  
+  
+  <br>
 <div class="box-container">
   
       <div class="box">  
@@ -210,12 +214,8 @@
    </div>
 
 
-  <div class="box">
-    <img src="/public/css/image/doc-6.jpg " alt="">
-    <h3>Cynthia Wanja</h3>
-    <span>Anaesthiologt</span>         
-  </div>
-
+ 
+  
 </div>
 
 </section>
@@ -233,35 +233,85 @@
    </div>
 <div class="book-form">
   <form method="POST" action="/book">
-
+     
     <h3>Book appointments</h3>
+    <h3>fill in the form as required</h3>
     <label for="name">Name</label>
-    
-    <input type="text" placeholder="Name" class="box"   name="name"  required> 
+<input type="text" placeholder="Name" class="box" name="name" required>
+
     
     <label for="name">Email</label>
-    <input type="text" placeholder="Email" class="box" name="email" required> 
+    <input type="email" placeholder="Email" class="box" name="email" required> 
   
     <label for="name" >Number</label>
-    <input type="text" placeholder="Phone number" class="box"  name="phone_number" required> 
+    <input type="tel" placeholder="Phone number" id="phone_number" class="box"  name="phone_number" required> 
   
-    
+    <label for = "age">Age</label>
+    <input type="number"  type="age" id = "age"  name="age"  class="box" placeholder = "age" required  />
+    <br>
     <label for="name">Date</label>
     <input type="date" placeholder="Booking date" class="box" name="date" required> 
-
+    <label for="time">Time</label>
+    <input type="text" id="time" name="time" class="box" pattern="\d{2}:\d{2}" title="Enter time in format HH:MM" required style="width: 100%; padding: 5px;" oninput="formatTime(this)" />
+    
+    <script>
+    function formatTime(input) {
+        // Remove any non-numeric characters
+        input.value = input.value.replace(/[^\d]/g, '');
+        
+        // Ensure the value is in HH:MM format
+        if (input.value.length > 2) {
+            let hours = parseInt(input.value.substring(0, 2), 10);
+            let minutes = parseInt(input.value.substring(2), 10);
+            
+            // Limit hours to 23 and minutes to 59
+            if (hours > 23) {
+                hours = 23;
+            }
+            if (minutes > 59) {
+                minutes = 59;
+            }
+            
+            // Update the input value
+            input.value = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
+        }
+    }
+    </script>
+    <br>
+    <br>
     <label for="name">Message</label>
       <br>
       <input type="text" placeholder="Message" class="message-box" name="message" required> 
     <br>
   
   <input type = "submit" value = "Book now" class="btn">
+  
   </form>
 </div>
 
 </div>
 </section>
 <!--booking section ends-->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const phone_number = document.getElementById('phone_number');
+    if (phone_number) {
+        phone_number.addEventListener('input', function () {
+            let cleanedValue = this.value.replace(/\D/g, ''); // Remove non-numeric characters
+            cleanedValue = cleanedValue.slice(0, 10); // Limit to 10 digits
+            this.value = cleanedValue;
 
+            if (cleanedValue.length === 10) {
+                // Phone number has 10 digits
+                this.setCustomValidity('');
+            } else {
+                // Phone number does not have 10 digits
+                this.setCustomValidity('Phone number must have 10 digits');
+            }
+        });
+    }
+});
+</script>
 <!--review section starts -->
 
 <section class="review" id="review">
@@ -340,7 +390,7 @@
 
 
 <!--footer section starts-->
-<section class="footer">
+<section id="footer"class="footer"  >
   <div class="box-container">
      <div class="box">
       <h3>quick links</h3>
@@ -383,7 +433,7 @@
      </div>
 
   </div>
-  <div class="credit"> created by<span>Victor Kinyanjui</span> | all rights reserved</div>
+  <div class="credit"> <span>created by Victor Kinyanjui</span> | all rights reserved</div>
 </section>
 
 <!--footer section ends-->
