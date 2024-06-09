@@ -23,10 +23,11 @@
             <a href="#review">review</a>
             
         </nav>
-       
+        
 
         <div id="menu-btn" class="fas fa-bars"></div>
-    
+        <a href="/patients_table" class="submit" id= "login">View Records</a>
+        <a href="/logout" class="submit" id= "login">Logout</a>
         </header>
         <!--header section ends-->
   
@@ -47,7 +48,7 @@
            
         <form action="/patient_register" method="POST">
             <label for="name">Name</label>
-            <input type="text" placeholder="Name" class="box" name="name" pattern="[A-Za-z]+" title="Please enter a valid name (letters only)" required>
+            <input type="text" placeholder="Name" class="box" name="name" required>
             <br>
            
             <label for="email">email</label>

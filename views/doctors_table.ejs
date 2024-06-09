@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors Table</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/js/script.js">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* Light blue background */
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            font-size: 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4caf50; /* Green header */
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5; /* Light grey on hover */
+        }
+    </style>
+</head>
+<body>
+     <!--header section starts-->
+     <header class="header">
+        <a href="#" class="logo"><i class="fa-solid fa-briefcase-medical"></i>Health Plus</i></a>
+        <br>
+        <nav class="navbar">
+
+            <a href="/">home</a>
+            <a href="#services">services</a>
+            <a href="/about">about</a>
+            <a href="/doctors">doctors</a>
+            <a href="#book">book</a>
+            <a href="#review">review</a>
+            
+        </nav>
+       
+
+        <div id="menu-btn" class="fas fa-bars"></div>
+    
+        </header>
+        <!--header section ends-->
+    <h1>doctors register </h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>email</th>
+                <th>phone_number</th>
+                <th>password_hash</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            <% doctors.forEach(doctors => { %>
+                <tr>
+                    <td><%= doctors.id %></td>
+                    <td><%= doctors.name %></td>
+                    <td><%= doctors.email %></td>
+                    <td><%= doctors.phone_number %></td>
+                    <td><%= doctors.password_hash %></td>
+                    
+                   
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

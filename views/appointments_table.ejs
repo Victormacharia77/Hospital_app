@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments Table</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            font-size: 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--green);
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .submit {
+            text-decoration: underline;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        form {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function toggleForm(formId) {
+            const form = document.getElementById(formId);
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <!--header section starts-->
+    <header class="header">
+        <a href="#" class="logo"><i class="fa-solid fa-briefcase-medical"></i>Health Plus</a>
+        <br>
+        <nav class="navbar">
+            <a href="/">home</a>
+            <a href="#services">services</a>
+            <a href="/about">about</a>
+            <a href="/doctors">doctors</a>
+            <a href="#book">book</a>
+            <a href="#review">review</a>
+        </nav>
+        <div id="menu-btn" class="fas fa-bars"></div>
+        <a href="/logout" class="submit" id="login">Logout</a>
+    </header>
+    <!--header section ends-->
+    <h1>Appointments Records</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Age</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Message</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% appointments.forEach(appointment => { %>
+                <tr>
+                    <td><%= appointment.id %></td>
+                    <td><%= appointment.name %></td>
+                    <td><%= appointment.email %></td>
+                    <td><%= appointment.age %></td>
+                    <td>
+                    <!-- Debugging output -->
+                    <p>Raw Date: <%= appointment.date %></p>
+                    <p>Formatted Date: <%= new Date(appointment.date).toISOString().split('T')[0] %></p>
+                    </td>
+                    <td><%= appointment.time %></td>
+                    <td><%= appointment.message %></td>
+                    <td>
+                        <a href="/appointments/delete/<%= appointment.id %>" class="btn">Delete</a>
+                        <br>
+                        <button onclick="toggleForm('updateForm<%= appointment.id %>')" class="btn">Edit</button>
+                        <form id="updateForm<%= appointment.id %>" action="/update_appointments/<%= appointment.id %>" class="update" method="post">
+                            <input type="hidden" name="id" value="<%= appointment.id %>">
+                            <input type="text" name="name" placeholder="Name" value="<%= appointment.name %>" required>
+                            <input type="email" name="email" placeholder="Email" value="<%= appointment.email %>" required>
+                            <input type="age" name="age" placeholder="Age"  min="0" value="<%= appointment.age %>" required>
+                           
+                            <input type="text" name="time" value="<%= appointment.time  %>" >
+
+                            
+                            <input type="date" name="date" value="<%= new Date(appointment.date).toISOString().split('T')[0] %>">
+                            
+                            <button type="submit" class="btn">Update</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

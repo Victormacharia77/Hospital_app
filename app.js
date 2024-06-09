@@ -65,6 +65,7 @@ app.get("/", (req, res) => {
 app.get("/login", forwardAuthenticated, (req, res) => {
   res.render("login");
 });
+
 app.post("/login", (req, res, next) => {
   passport.authenticate("user-local", (err, user, info) => {
     if (err) return next(err);
@@ -77,6 +78,24 @@ app.post("/login", (req, res, next) => {
     });
   })(req, res, next);
 });
+//logout session 
+app.get("/logout", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    req.session.destroy((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.clearCookie('connect.sid'); // Clear the session cookie
+      // req.flash('success_msg', 'You are logged out');
+      res.redirect("/");
+    });
+  });
+});
+
+
 // Route for the patient dashboard, protected by authentication
 app.get("/patient_register", ensureAuthenticated, (req, res) => {
   res.render("patient_register");
@@ -109,13 +128,122 @@ app.post("/patient_register", ensureAuthenticated, async (req, res) => {
       date,
     ]);
     req.flash("success_msg", "Patient information successfully entered");
-    res.redirect("/");
+    res.redirect("/patients_table");
   } catch (error) {
     req.flash("error_msg", "Failed to input patient information");
     console.error("Failed to insert into patient_info table:", error);
     res.redirect("/patient_register");
   }
 });
+
+
+// Route to display the patient table
+app.get("/patients_table", ensureAuthenticated, async (req, res) => {
+  try {
+    const patients_info_query = "SELECT * FROM patient_info";
+    const patients_info = await query(patients_info_query);
+    res.render("patients_table", { patients_info });
+  } catch (error) {
+    req.flash("error_msg", "Failed to retrieve patient information");
+    console.error("Failed to fetch patient_info from the database:", error);
+    res.redirect("/patient_register");
+  }
+});
+
+// DELETE route for deleting patient information
+app.get('/delete/:id', async (req, res) => {
+  const patientId = req.params.id;
+  try {
+      const deleteQuery = 'DELETE FROM patient_info WHERE id = ?';
+      await query(deleteQuery, [patientId]);
+      req.flash('success_msg', 'Patient record deleted successfully');
+      res.redirect('/patients_table');
+  } catch (error) {
+      console.error('Failed to delete patient record:', error);
+      req.flash('error_msg', 'Failed to delete patient record');
+      res.redirect('/patients_table');
+  }
+});
+
+// Route to display the patient table
+app.get("/doctors_table", ensureAuthenticated, async (req, res) => {
+  try {
+    const doctors_info_query = "SELECT * FROM doctors";
+    const doctors_info = await query(doctors_info_query);
+    res.render("doctors_table", { doctors_info });
+  } catch (error) {
+    req.flash("error_msg", "Failed to input doctors information");
+    console.error("Failed to fetch doctors information from the database:", error);
+    res.redirect("/doctors_table");
+  }
+});
+
+//route to access appointment records
+app.get("/appointments_table", ensureAuthenticated, async (req, res) => {
+  try {
+    const appointments_query = "SELECT * FROM appointments";
+    const appointments = await query(appointments_query);
+    res.render("appointments_table", { appointments });
+  } catch (error) {
+    req.flash("error_msg", "Failed to retrieve appointment information");
+    console.error("Failed to fetch appointment information from the database:", error);
+    res.redirect("/patient_register");
+  }
+});
+
+// DELETE route for deleting appointment information
+app.delete('/appointments/delete/:id', async (req, res) => {
+  const appointmentId = req.params.id;
+  try {
+      const deleteQuery = 'DELETE FROM appointments WHERE id = ?';
+      await query(deleteQuery, [appointmentId]);
+      req.flash('success_msg', 'Appointment record deleted successfully');
+      res.redirect('/appointments_table');
+  } catch (error) {
+      console.error('Failed to delete appointment record:', error);
+      req.flash('error_msg', 'Failed to delete appointment record');
+      res.redirect('/appointments_table');
+  }
+});
+
+
+
+// Route to handle patient update
+
+
+app.post('/update_patient/:id', async(req, res) => {
+  const patientId = req.body.id;
+  const {name, email,age,gender,diagnosis,treatment,time,date} = req.body
+  console.log(patientId)
+  
+
+  try {
+    const updateQuery = 'UPDATE patient_info SET name=?,email=?,age=?,gender=?,diagnosis=?,treatment=?,time=?,date=? WHERE id = ?';
+    await query(updateQuery, [name,email,age,gender,diagnosis,treatment,time,date,patientId]);
+    
+    
+    
+  } catch (error) {
+    alert(error)
+  }
+ 
+  res.redirect('/patients_table');
+});
+
+app.post('/update_appointments/:id', async(req,res) =>{
+  const apppointmentId = req.body.id;
+  const {name,email,age,date,time} = req.body
+  console.log(req.body)
+  console.log('Raw Date from Form:', date); // Debugging
+  try {
+    const appointments_query = "UPDATE appointments SET name=? ,email=?,age=?,date=?,time=? WHERE id = ?"
+    await query(appointments_query ,[name,email,age,date,time,apppointmentId])
+  } catch (error) {
+    alert(error)
+  }
+
+  res.redirect('/appointments_table');
+})
 
 //route for ambulance page
 
@@ -128,6 +256,7 @@ app.get("/ambulance", (req, res) => {
 app.get("/checkup", (req, res) => {
   res.render("checkup");
 });
+
 app.post("/checkup", async (req, res) => {
   const { id, full_name, email, date, message } = req.body;
   console.log(req.body);
@@ -145,6 +274,7 @@ app.post("/checkup", async (req, res) => {
     res.redirect("/checkup");
   }
 });
+
 app.get("/inpatient", (req, res) => {
   res.render("inpatient");
 });
@@ -177,7 +307,7 @@ function validatePhoneNumber(phoneNumber) {
 
   return phoneRegex.test(phoneNumber);
 }
-
+/*
 // POST route for booking appointments
 app.post("/book", async (req, res) => {
   console.log("posted");
@@ -250,6 +380,227 @@ app.post("/book", async (req, res) => {
   }
 });
 
+*/
+
+
+
+
+
+
+/*
+// POST route for booking appointments
+app.post("/book", async (req, res) => {
+  const { id, name, email, phone_number, date, time, message } = req.body;
+  console.log(req.body);
+
+  try {
+    const bookAppointmentQuery =
+      "INSERT INTO appointments (id, name, email, phone_number, date, time, message) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    await query(bookAppointmentQuery, [
+      id,
+      name,
+      email,
+      phone_number,
+      date,
+      time,
+      message,
+    ]);
+
+    req.flash("success_msg", "Appointment booked successfully");
+    res.redirect("/");
+  } catch (error) {
+    req.flash("error_msg", "Failed to book appointment");
+    console.error("Failed to insert into appointments table:", error);
+    res.redirect("/");
+  }
+});
+*/
+
+
+
+
+
+
+
+
+// Function to validate email address
+function validateEmail(email) {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
+// Function to validate phone number
+function validatePhoneNumber(phone_number) {
+  const phoneRegex = /^\d{10}$/;
+  return phoneRegex.test(phone_number);
+}
+
+// POST route for booking appointments with input validation and patient check
+app.post("/book", async (req, res) => {
+  const { id, name, email, phone_number, age, date, time, message } = req.body;
+
+  // Validate email and phone number
+  const validEmail = validateEmail(email);
+  const validPhoneNumber = validatePhoneNumber(phone_number);
+
+  try {
+    if (!validEmail || !validPhoneNumber) {
+      req.flash("error_msg", "Invalid email address or phone number");
+      res.redirect("/#book");
+      return;
+    }
+
+    // Check if the name contains only alphanumeric characters
+    const validName = /^[a-zA-Z0-9\s]+$/.test(name.trim());
+    if (!validName) {
+      req.flash(
+        "error_msg",
+        "Name should contain only alphabetic and numeric characters"
+      );
+      res.redirect("/#book");
+      return;
+    }
+
+    // Check if the patient already exists
+    const patientCheckQuery = "SELECT * FROM patient_info WHERE email = ?";
+    const [existingPatient] = await query(patientCheckQuery, [email]);
+
+    // If the patient doesn't exist, create a new patient record
+    if (!existingPatient) {
+      const createPatientQuery =
+        "INSERT INTO patient_info (id, name, email, age, time, date) VALUES (?, ?, ?, ?, ?, ?)";
+      await query(createPatientQuery, [
+        id,
+        name,
+        email,
+        age,
+        time,
+        date,
+      ]);
+    }
+
+    // Book the appointment
+    const saveBookingQuery =
+      "INSERT INTO appointments (id, name, email, phone_number,age, date, time, message) VALUES (?, ?, ?, ? ,?, ?, ?, ?)";
+    await query(saveBookingQuery, [
+      id,
+      name,
+      email,
+      phone_number,
+      age,
+      date,
+      time,
+      message,
+    ]);
+
+    req.flash("success_msg", "Appointment booked successfully");
+    res.redirect("/");
+  } catch (error) {
+    req.flash("error_msg", "Failed to book appointment");
+    console.error("Failed to insert into appointments table:", error);
+    res.redirect("/");
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //route for total care
 
 app.get("/totalcare", (req, res) => {
@@ -267,6 +618,7 @@ app.get("/register", (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
+  console.log("posted")
   try {
     let errors = [];
     const { id, name, email, phone_number, password } = req.body;
@@ -306,7 +658,7 @@ app.post("/register", async (req, res) => {
       ]);
 
       req.flash("success_msg", "Doctor registration successful");
-      res.redirect("/");
+      res.redirect("/doctors_table");
     }
   } catch (error) {
     req.flash("error_msg", "Failed to register a doctor");
@@ -318,6 +670,10 @@ app.post("/register", async (req, res) => {
 //route of nurse page
 app.get("/doctors", (req, res) => {
   res.render("doctors");
+});
+
+app.get("/about", (req, res) => {
+  res.render("about");
 });
 
 //create a port

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="/public/css/style.css">
     <link rel="stylesheet" href="/js/script.js">
+    
 </head>
 <body>
     <!--header section starts-->
@@ -16,14 +17,14 @@
     <nav class="navbar">
         <a href="/">home</a>
         <a href="#services">services</a>
-        <a href="#">about</a>
+        <a href="/about">about</a>
         <a href="/doctors">doctors</a>
         <a href="/">book</a>
         <a href="#review">review</a>
     </nav>
 
      
-      
+    <a href="/login" class="submit" id= "login">Login as a doctor</a>
     
     <div id="menu-btn" class="fas fa-bars"></div>
 
@@ -145,7 +146,7 @@
 <h1 class = 'heading'>OUR<span>DOCTORS</span></h1>
   
 <!--doctor section starts-->
-<a href="/login" class="submit" id= "login">Login as a doctor</a>
+
     
 <section class="doctors" id = "doctors">
   
@@ -204,7 +205,7 @@
    </div>
 <div class="book-form">
   
-  <form method="POST" action="/book">
+  <form method="POST" action="/book" id="booking-form">
      
     <h3>Book appointments</h3>
     <h3>fill in the form as required</h3>
@@ -219,35 +220,92 @@
     <input type="tel" placeholder="Phone number" id="phone_number" class="box"  name="phone_number" required> 
   
     <label for = "age">Age</label>
-    <input type="number"  type="age" id = "age"  name="age"  class="box" placeholder = "age" required  />
+    <input type="number"  type="age" id = "age"  name="age"  class="box" min="0" placeholder = "age" required  />
     <br>
     <label for="name">Date</label>
     <input type="date" placeholder="Booking date" class="box" name="date" required> 
+
     <label for="time">Time</label>
-    <input type="text" id="time" name="time" class="box" pattern="\d{2}:\d{2}" title="Enter time in format HH:MM" required style="width: 100%; padding: 5px;" oninput="formatTime(this)" />
+    <input type="text" id="time" name="time" class="box"  required style="width: 100%; padding: 5px;" oninput="formatTime(this)" />
+<!--
+    <input type="checkbox" id="toggle-rescheduled" style="  padding: 2rem; border-radius: .5rem;">
+    <label for="toggle-rescheduled" >Reschedule Appointment</label>
     
+    <br>
+    <label for="date" id="rescheduledDateLabel"> Rescheduled date</label>
+<input type="date" id="rescheduled_date" name="rescheduled_date" class="box hidden-input" >
+
+<label for="time" id="rescheduledTimeLabel">Rescheduled Time</label>
+<input type="text" id="rescheduled_time" name="time" class="box hidden-input" required style="width: 100%; padding: 5px;" oninput="formatTime(this)">
+  -->
+
     <script>
     function formatTime(input) {
-        // Remove any non-numeric characters
-        input.value = input.value.replace(/[^\d]/g, '');
+    // Remove any non-numeric characters except colon
+    input.value = input.value.replace(/[^\d:]/g, '');
+    
+    // Ensure the value is in HH:MM format
+    if (input.value.length > 2) {
+        let hours = parseInt(input.value.substring(0, 2), 10);
+        let minutes = parseInt(input.value.substring(3), 10);
         
-        // Ensure the value is in HH:MM format
-        if (input.value.length > 2) {
-            let hours = parseInt(input.value.substring(0, 2), 10);
-            let minutes = parseInt(input.value.substring(2), 10);
-            
-            // Limit hours to 23 and minutes to 59
-            if (hours > 23) {
-                hours = 23;
+        // Limit hours to 12 and minutes to 59
+        if (hours > 12) {
+            hours = 12;
+        }
+        if (minutes > 59) {
+            minutes = 59;
+        }
+        
+        // Update the input value
+        input.value = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
+        
+        // Append AM/PM
+        if (input.value.length === 5) {
+            let period = ' AM';
+            if (hours >= 12) {
+                period = ' PM';
             }
-            if (minutes > 59) {
-                minutes = 59;
-            }
-            
-            // Update the input value
-            input.value = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2);
+            input.value += period;
         }
     }
+}
+
+document.getElementById('booking-form').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the form from submitting normally
+
+    // Show the notification
+    document.getElementById('notification').classList.remove('hidden');
+
+    // Hide the notification after a delay
+    setTimeout(function() {
+        document.getElementById('notification').classList.add('hidden');
+        window.location.reload(); // Reload the page
+    }, 3000); // 3 seconds
+});
+
+/*
+    const toggleRescheduled = document.getElementById('toggle-rescheduled');
+    const rescheduledDateLabel = document.getElementById('rescheduledDateLabel');
+    const rescheduledTimeLabel = document.getElementById('rescheduledTimeLabel');
+    const rescheduledDateInput = document.getElementById('rescheduled_date');
+    const rescheduledTimeInput = document.getElementById('rescheduled_time');
+
+    toggleRescheduled.addEventListener('change', function () {
+        if (toggleRescheduled.checked) {
+            rescheduledDateLabel.style.display = 'block';
+            rescheduledTimeLabel.style.display = 'block';
+            rescheduledDateInput.style.display = 'block';
+            rescheduledTimeInput.style.display = 'block';
+        } else {
+            rescheduledDateLabel.style.display = 'none';
+            rescheduledTimeLabel.style.display = 'none';
+            rescheduledDateInput.style.display = 'none';
+            rescheduledTimeInput.style.display = 'none';
+        }
+    });
+*/
+    
     </script>
     <br>
     <br>
@@ -256,9 +314,15 @@
       <input type="text" placeholder="Message" class="message-box" name="message" required> 
     <br>
   
-  <input type = "submit" value = "Book now" class="btn">
+  <input type = "submit" value = "Book now" class="btn"> 
+   
+   
+  <a href="/cancel" class="btn" id= "login">Cancel</a>
   
   </form>
+
+  <div id="notification" class="hidden">Booking successful!</div>
+
 </div>
 
 </div>

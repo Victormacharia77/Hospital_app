@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patients Table</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* Light blue background */
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            font-size: 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--green);
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5; /* Light grey on hover */
+        }
+
+        .submit {
+            text-decoration: underline;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        form {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        function toggleForm(formId) {
+            const form = document.getElementById(formId);
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <!--header section starts-->
+    <header class="header">
+        <a href="#" class="logo"><i class="fa-solid fa-briefcase-medical"></i>Health Plus</a>
+        <br>
+        <nav class="navbar">
+            <a href="/">home</a>
+            <a href="#services">services</a>
+            <a href="/about">about</a>
+            <a href="/doctors">doctors</a>
+            <a href="#book">book</a>
+            <a href="#review">review</a>
+        </nav>
+        <a href="/appointments_table" class="btn" id="login">Appointment Records</a>
+        <a href="/logout" class="btn" id="login">Logout</a>
+        <div id="menu-btn" class="fas fa-bars"></div>
+    </header>
+    <!--header section ends-->
+    <h1>Patients Records</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>email</th>
+                <th>gender</th>
+                <th>diagnosis</th>
+                <th>treatment</th>
+                <th>time</th>
+                <th>date</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% patients_info.forEach(patient => { %>
+                <tr>
+                    <td><%= patient.id %></td>
+                    <td><%= patient.name %></td>
+                    <td><%= patient.email %></td>
+                    <td><%= patient.gender %></td>
+                    <td><%= patient.diagnosis %></td>
+                    <td><%= patient.treatment %></td>
+                    <td><%= patient.time %></td>
+                    <td><%= patient.date %></td>
+                    <td>
+                        <a href="/delete/<%= patient.id %>" class="btn">Delete</a>
+                        <br>
+                        <button onclick="toggleForm('updateForm<%= patient.id %>')" class="btn">Edit</button>
+                        <form id="updateForm<%= patient.id %>" action="/update_patient/<%= patient.id %>"  class="update" method="post">
+                            <input type="hidden" name="id" value= "<%= patient.id %>">
+                            <input type="text" name="name" placeholder="Name" value="<%= patient.name %>" required>
+                            <input type="email" name="email" placeholder="Email" value="<%= patient.email %>" required>
+                            <input type="text" name="gender" placeholder="Gender" value="<%= patient.gender %>" required>
+                            <input type="text" name="diagnosis" placeholder="Diagnosis" value="<%= patient.diagnosis %>" required>
+                            <input type="text" name="treatment" placeholder="Treatment" value="<%= patient.treatment %>" required>
+                            <input type="time" name="time" value="<%= patient.time  %>" >
+
+ <!-- Debugging output -->
+ <p>Raw Date: <%= patient.date %></p>
+ <p>Formatted Date: <%= new Date(patient.date).toISOString().split('T')[0] %></p>
+
+
+
+                           
+                            <input type="date" name="date" value="<%= new Date(patient.date).toISOString().split('T')[0]  %>" >
+                            <button type="submit" class="btn"> Update</button>
+                        </form>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>
